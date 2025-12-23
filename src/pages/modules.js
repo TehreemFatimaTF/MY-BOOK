@@ -36,7 +36,7 @@ function ModulesPage() {
 
   return (
     // <section> ki jagah <Layout> use karein taake header/footer nazar aayein
-    <Layout
+    <section
       title={`Modules - ${siteConfig.title}`}
       description="Physical AI & Humanoid Robotics curriculum modules"
     >
@@ -70,7 +70,7 @@ function ModulesPage() {
 </div>
         </div>
       </main>
-    </Layout>
+    </section>
   ); // Yahan extra bracket khatam kar diya gaya hai
 }
 

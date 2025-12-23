@@ -35,4 +35,3 @@ By the end of this course, you will be able to:
 
 ---
 
-*Ready to dive into the future of robotics? Start with [Why Choose This Book?](/why-choose-book) to understand the value of Physical AI education.*

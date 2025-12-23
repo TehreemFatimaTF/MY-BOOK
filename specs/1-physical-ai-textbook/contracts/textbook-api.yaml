@@ -1,0 +1,389 @@
+openapi: 3.0.3
+info:
+  title: Physical AI & Humanoid Robotics Textbook API
+  description: API for the Physical AI & Humanoid Robotics textbook platform, including RAG chatbot, authentication, personalization, and translation services.
+  version: 1.0.0
+servers:
+  - url: http://localhost:8000
+    description: Local development server
+  - url: https://api.textbook-platform.com
+    description: Production server
+
+paths:
+  /api/v1/chat:
+    post:
+      summary: Chat with the AI assistant
+      description: Send a message to the AI assistant and receive a response based on textbook content
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - message
+                - user_id
+              properties:
+                message:
+                  type: string
+                  description: The user's message to the AI assistant
+                  example: "Explain ROS 2 nodes and topics"
+                user_id:
+                  type: string
+                  description: The authenticated user's ID (optional for anonymous users)
+                  example: "user-12345"
+                context:
+                  type: object
+                  description: Additional context for personalization
+                  properties:
+                    current_module:
+                      type: string
+                      description: The module the user is currently studying
+                      example: "module-1-ros2"
+                    hardware_background:
+                      type: string
+                      description: User's hardware background for personalized responses
+                      example: "nvidia-jetson"
+      responses:
+        '200':
+          description: Successful response from the AI assistant
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - response
+                  - sources
+                properties:
+                  response:
+                    type: string
+                    description: The AI assistant's response
+                    example: "ROS 2 nodes are..."
+                  sources:
+                    type: array
+                    items:
+                      type: string
+                    description: List of textbook content IDs used to generate the response
+                    example: ["content-123", "content-456"]
+        '400':
+          description: Bad request - invalid input
+        '500':
+          description: Internal server error
+
+  /api/v1/auth/register:
+    post:
+      summary: Register a new user
+      description: Create a new user account with background information
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - email
+                - password
+                - name
+              properties:
+                email:
+                  type: string
+                  format: email
+                  description: User's email address
+                  example: "student@example.com"
+                password:
+                  type: string
+                  format: password
+                  description: User's password
+                  example: "securePassword123"
+                name:
+                  type: string
+                  description: User's display name
+                  example: "John Doe"
+                hardware_background:
+                  type: string
+                  description: User's hardware background
+                  example: "nvidia-jetson,ros-experience"
+                software_background:
+                  type: string
+                  description: User's software background
+                  example: "python,c++,ros2"
+      responses:
+        '201':
+          description: User successfully registered
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - user_id
+                  - email
+                  - name
+                properties:
+                  user_id:
+                    type: string
+                    description: The newly created user's ID
+                    example: "user-7890"
+                  email:
+                    type: string
+                    format: email
+                    description: User's email address
+                    example: "student@example.com"
+                  name:
+                    type: string
+                    description: User's display name
+                    example: "John Doe"
+        '400':
+          description: Bad request - invalid input or email already exists
+        '500':
+          description: Internal server error
+
+  /api/v1/auth/login:
+    post:
+      summary: User login
+      description: Authenticate a user and return session information
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - email
+                - password
+              properties:
+                email:
+                  type: string
+                  format: email
+                  description: User's email address
+                  example: "student@example.com"
+                password:
+                  type: string
+                  format: password
+                  description: User's password
+                  example: "securePassword123"
+      responses:
+        '200':
+          description: User successfully logged in
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - user_id
+                  - email
+                  - name
+                  - access_token
+                properties:
+                  user_id:
+                    type: string
+                    description: The user's ID
+                    example: "user-7890"
+                  email:
+                    type: string
+                    format: email
+                    description: User's email address
+                    example: "student@example.com"
+                  name:
+                    type: string
+                    description: User's display name
+                    example: "John Doe"
+                  access_token:
+                    type: string
+                    description: JWT access token for subsequent requests
+                    example: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
+        '400':
+          description: Bad request - invalid credentials
+        '500':
+          description: Internal server error
+
+  /api/v1/user/profile:
+    get:
+      summary: Get user profile
+      description: Retrieve the authenticated user's profile information
+      security:
+        - BearerAuth: []
+      responses:
+        '200':
+          description: User profile retrieved successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - user_id
+                  - email
+                  - name
+                properties:
+                  user_id:
+                    type: string
+                    description: The user's ID
+                    example: "user-7890"
+                  email:
+                    type: string
+                    format: email
+                    description: User's email address
+                    example: "student@example.com"
+                  name:
+                    type: string
+                    description: User's display name
+                    example: "John Doe"
+                  hardware_background:
+                    type: string
+                    description: User's hardware background
+                    example: "nvidia-jetson,ros-experience"
+                  software_background:
+                    type: string
+                    description: User's software background
+                    example: "python,c++,ros2"
+                  preferred_language:
+                    type: string
+                    description: User's preferred language
+                    example: "en"
+        '401':
+          description: Unauthorized - invalid or missing token
+        '500':
+          description: Internal server error
+    put:
+      summary: Update user profile
+      description: Update the authenticated user's profile information
+      security:
+        - BearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                  description: User's display name
+                  example: "John Doe"
+                hardware_background:
+                  type: string
+                  description: User's hardware background
+                  example: "nvidia-jetson,ros-experience"
+                software_background:
+                  type: string
+                  description: User's software background
+                  example: "python,c++,ros2"
+                preferred_language:
+                  type: string
+                  description: User's preferred language
+                  example: "en"
+      responses:
+        '200':
+          description: User profile updated successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - user_id
+                  - email
+                  - name
+                properties:
+                  user_id:
+                    type: string
+                    description: The user's ID
+                    example: "user-7890"
+                  email:
+                    type: string
+                    format: email
+                    description: User's email address
+                    example: "student@example.com"
+                  name:
+                    type: string
+                    description: User's display name
+                    example: "John Doe"
+        '400':
+          description: Bad request - invalid input
+        '401':
+          description: Unauthorized - invalid or missing token
+        '500':
+          description: Internal server error
+
+  /api/v1/translate:
+    post:
+      summary: Translate content to Urdu
+      description: Translate textbook content to Urdu
+      security:
+        - BearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - content_id
+              properties:
+                content_id:
+                  type: string
+                  description: The ID of the content to translate
+                  example: "content-12345"
+                target_language:
+                  type: string
+                  description: The target language for translation (default: ur)
+                  example: "ur"
+      responses:
+        '200':
+          description: Content translated successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - original_content
+                  - translated_content
+                  - content_id
+                properties:
+                  original_content:
+                    type: string
+                    description: The original English content
+                    example: "ROS 2 is a flexible framework..."
+                  translated_content:
+                    type: string
+                    description: The translated Urdu content
+                    example: "ROS 2 ایک لچکدار فریم ورک ہے..."
+                  content_id:
+                    type: string
+                    description: The ID of the content that was translated
+                    example: "content-12345"
+        '400':
+          description: Bad request - invalid input
+        '401':
+          description: Unauthorized - invalid or missing token
+        '500':
+          description: Internal server error
+
+  /api/v1/health:
+    get:
+      summary: Health check
+      description: Check the health status of the API
+      responses:
+        '200':
+          description: API is healthy
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - status
+                properties:
+                  status:
+                    type: string
+                    description: Health status
+                    example: "healthy"
+                  timestamp:
+                    type: string
+                    format: date-time
+                    description: Timestamp of the health check
+                    example: "2023-10-01T12:00:00Z"
+
+components:
+  securitySchemes:
+    BearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
