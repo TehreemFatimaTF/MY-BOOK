@@ -1,0 +1,133 @@
+/**
+ * CSS module for the ChatbotWidget component
+ * Provides styling for the embedded chat widget in the Physical AI textbook
+ */
+.chatContainer {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  z-index: 9999;
+}
+
+/* closed widget button */
+.chatToggleButton {
+  background: #000;
+  color: #FFD700; /* yellow */
+  padding: 12px 18px;
+  border-radius: 50px;
+  border: 2px solid #FFD700;
+  font-weight: bold;
+  cursor: pointer;
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  transition: 0.3s;
+}
+
+.chatToggleButton:hover {
+  background: #FFD700;
+  color: #000;
+}
+
+/* icon image */
+.chatIconImg {
+  width: 22px;
+  height: 22px;
+}
+
+/* opened widget box */
+.chatWidget {
+  width: 380px;
+  height: 520px;
+  background: #000;
+  border: 2px solid #FFD700;
+  border-radius: 16px;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  color: white;
+}
+
+/* Header */
+.chatHeader {
+  background: #FFD700;
+  color: #000;
+  padding: 12px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.closeButton {
+  background: transparent;
+  border: none;
+  color: #000;
+  font-size: 22px;
+  cursor: pointer;
+}
+
+/* messages area */
+.chatMessages {
+  flex: 1;
+  padding: 10px;
+  overflow-y: auto;
+}
+
+/* user + bot messages */
+.message.user .messageContent {
+  background: #FFD700;
+  color: #000;
+  padding: 10px;
+  border-radius: 10px;
+  margin: 6px 0;
+}
+
+.message.bot .messageContent {
+  background: #222;
+  color: #FFD700;
+  padding: 10px;
+  border-radius: 10px;
+  margin: 6px 0;
+}
+
+/* input section */
+.chatInputArea {
+  display: flex;
+  padding: 10px;
+  border-top: 2px solid #FFD700;
+  background: #111;
+}
+
+.chatInput {
+  flex: 1;
+  border-radius: 8px;
+  border: 1px solid #FFD700;
+  padding: 8px;
+  background: #000;
+  color: #FFD700;
+}
+
+.sendButton {
+  background: #FFD700;
+  color: #000;
+  border-radius: 6px;
+  margin-left: 8px;
+  padding: 8px 16px;
+  cursor: pointer;
+  border: none;
+  font-weight: bold;
+}
+
+.sendButtonDisabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.chatFooter {
+  padding: 6px;
+  text-align: center;
+  font-size: 10px;
+  background: #111;
+  color: #FFD700;
+  border-top: 1px solid #FFD700;
+}

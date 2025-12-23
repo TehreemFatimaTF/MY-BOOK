@@ -1,0 +1,24 @@
+/**
+ * Any CSS included here will be global. The classic template
+ * bundles Infima by default. Infima is a CSS framework designed to
+ * work well for content-centric websit/* Light mode */
+:root {
+  --ifm-color-primary: #FFD700; /* yellow */
+  --ifm-color-primary-dark: #E6C200;
+  --ifm-color-primary-darker: #CCAD00;
+  --ifm-color-primary-darkest: #B39900;
+  --ifm-color-primary-light: #FFDF33;
+  --ifm-color-primary-lighter: #FFE366;
+  --ifm-color-primary-lightest: #FFF099;
+}
+
+/* Dark mode */
+[data-theme='dark'] {
+  --ifm-color-primary: #FFD700; /* yellow */
+  --ifm-color-primary-dark: #E6C200;
+  --ifm-color-primary-darker: #CCAD00;
+  --ifm-color-primary-darkest: #B39900;
+  --ifm-color-primary-light: #FFDF33;
+  --ifm-color-primary-lighter: #FFE366;
+  --ifm-color-primary-lightest: #FFF099;
+}
