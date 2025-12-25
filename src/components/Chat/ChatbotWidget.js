@@ -33,10 +33,8 @@ const ChatbotWidget = ({ initialOpen = false }) => {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          query_text: currentInput, // Changed from 'message' to 'query_text' to match backend API
-          book_id: 'physical_ai_textbook', // Using a default book ID - you can change this as needed
-          session_id: null // Optional session ID - can be implemented later if needed
-          // selected_text is optional and can be added if needed
+          query: currentInput,
+          book_id: 'physical_ai_textbook'
         }),
       });
 
@@ -48,12 +46,12 @@ const ChatbotWidget = ({ initialOpen = false }) => {
 
       // 3. Agent ka real response UI mein add karein
       const botMessage = {
-        id: Date.now() + 1,
-        text: data.response_text, // Backend returns 'response_text' field according to GeneratedResponse model
-        sender: 'bot',
-        timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
-        sources: ['Physical AI Textbook']
-      };
+      id: Date.now() + 1,
+      text: data.response || data.answer || data.response_text || "No response from backend",
+      sender: 'bot',
+      timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
+    };
+
 
       setMessages(prev => [...prev, botMessage]);
     } catch (error) {
