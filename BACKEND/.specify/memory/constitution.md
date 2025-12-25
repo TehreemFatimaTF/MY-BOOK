@@ -1,55 +1,72 @@
-# [PROJECT_NAME] Constitution
-<!-- Example: Spec Constitution, TaskFlow Constitution, etc. -->
+<!--
+Sync Impact Report:
+- Version change: 1.0.0 → 1.1.0
+- Modified principles:
+  - PRINCIPLE_1_NAME: Accuracy in Responses
+  - PRINCIPLE_2_NAME: Efficiency and Cost Optimization
+  - PRINCIPLE_3_NAME: User-Centric Design
+  - PRINCIPLE_4_NAME: Modularity and Scalability
+  - PRINCIPLE_5_NAME: Security and Data Protection
+  - PRINCIPLE_6_NAME: Code Quality and Testing Standards
+- Added sections: Key Standards, Development Workflow, Success Criteria
+- Removed sections: None
+- Templates requiring updates:
+  - .specify/templates/plan-template.md: ⚠ pending
+  - .specify/templates/spec-template.md: ⚠ pending
+  - .specify/templates/tasks-template.md: ⚠ pending
+  - .specify/templates/commands/*.md: ⚠ pending
+- Follow-up TODOs: None
+-->
+# Integrated RAG Chatbot Development Constitution
 
 ## Core Principles
 
-### [PRINCIPLE_1_NAME]
-<!-- Example: I. Library-First -->
-[PRINCIPLE_1_DESCRIPTION]
-<!-- Example: Every feature starts as a standalone library; Libraries must be self-contained, independently testable, documented; Clear purpose required - no organizational-only libraries -->
+### I. Accuracy in Responses
+All responses must be strictly grounded in book content or user-selected text. The system must avoid hallucinations and ensure factual accuracy by referencing specific passages from the source material.
 
-### [PRINCIPLE_2_NAME]
-<!-- Example: II. CLI Interface -->
-[PRINCIPLE_2_DESCRIPTION]
-<!-- Example: Every library exposes functionality via CLI; Text in/out protocol: stdin/args → stdout, errors → stderr; Support JSON + human-readable formats -->
+### II. Efficiency and Cost Optimization
+Use free-tier services and optimized APIs for low latency and cost. The system must adhere to free-tier limits for Qdrant and Neon, while maintaining performance standards.
 
-### [PRINCIPLE_3_NAME]
-<!-- Example: III. Test-First (NON-NEGOTIABLE) -->
-[PRINCIPLE_3_DESCRIPTION]
-<!-- Example: TDD mandatory: Tests written → User approved → Tests fail → Then implement; Red-Green-Refactor cycle strictly enforced -->
+### III. User-Centric Design
+Design for seamless embedding and intuitive interactions within the book. The interface must be intuitive and enhance the reading experience without disruption.
 
-### [PRINCIPLE_4_NAME]
-<!-- Example: IV. Integration Testing -->
-[PRINCIPLE_4_DESCRIPTION]
-<!-- Example: Focus areas requiring integration tests: New library contract tests, Contract changes, Inter-service communication, Shared schemas -->
+### IV. Modularity and Scalability
+Build with modular components that allow for easy maintenance and scalability. The system must support swapping AI providers if needed and be easily extensible.
 
-### [PRINCIPLE_5_NAME]
-<!-- Example: V. Observability, VI. Versioning & Breaking Changes, VII. Simplicity -->
-[PRINCIPLE_5_DESCRIPTION]
-<!-- Example: Text I/O ensures debuggability; Structured logging required; Or: MAJOR.MINOR.BUILD format; Or: Start simple, YAGNI principles -->
+### V. Security and Data Protection
+Ensure secure handling of API keys (stored in environment variables) and no storage of user data beyond sessions. All data transmission must be secure.
 
-### [PRINCIPLE_6_NAME]
+### VI. Code Quality and Testing Standards
+Maintain PEP 8 compliant Python code with comprehensive documentation. Implement minimum 80% unit test coverage and integration tests for the RAG pipeline.
 
+## Key Standards
 
-[PRINCIPLE__DESCRIPTION]
+- All responses must be generated using Cohere API (no OpenAI); integrate via official SDK
+- Retrieval must use Qdrant for vector search; database operations via Neon Postgres for metadata
+- Backend built with FastAPI; development workflow incorporating SpecifyKit Plus for prompt specification and Qwen CLI for local testing
+- Handle user-selected text by dynamically scoping retrieval to selections only
+- API keys stored securely (e.g., environment variables); no storage of user data beyond sessions
+- Code quality: PEP 8 compliant Python; include docstrings and comments for all functions
+- Testing: Minimum 80% unit test coverage; integration tests for RAG pipeline
 
-## [SECTION_2_NAME]
-<!-- Example: Additional Constraints, Security Requirements, Performance Standards, etc. -->
+## Development Workflow
 
-[SECTION_2_CONTENT]
-<!-- Example: Technology stack requirements, compliance standards, deployment policies, etc. -->
+- Development tools: Must use SpecifyKit Plus or Qwen CLI for prototyping and refinement
+- Timeline: Assume iterative development; no strict deadline but aim for MVP in 2-4 weeks
+- Budget: Zero-cost beyond free tiers; no paid upgrades
+- Book embedding: Compatible with digital formats (e.g., HTML/PDF with JS); no native app development
+- API usage: Cohere API key only; adhere to free-tier limits for Qdrant and Neon
 
-## [SECTION_3_NAME]
-<!-- Example: Development Workflow, Review Process, Quality Gates, etc. -->
+## Success Criteria
 
-[SECTION_3_CONTENT]
-<!-- Example: Code review requirements, testing gates, deployment approval process, etc. -->
+- Chatbot accurately answers 95% of book-related queries in tests (evaluated via manual review or benchmarks)
+- Supports user-selected text mode without hallucinations (responses limited to provided context)
+- Successfully embedded in a sample published book (e.g., demo e-book) with functional interactions
+- Passes code review for quality, security, and efficiency
+- Zero critical bugs in deployment; positive feedback on "boht hi acha or behtreen" usability
 
 ## Governance
-<!-- Example: Constitution supersedes all other practices; Amendments require documentation, approval, migration plan -->
 
-[GOVERNANCE_RULES]
-<!-- Example: All PRs/reviews must verify compliance; Complexity must be justified; Use [GUIDANCE_FILE] for runtime development guidance -->
+This constitution supersedes all other practices in the project. All development, testing, and deployment activities must comply with these principles. Amendments require documentation, approval from project stakeholders, and a migration plan if applicable. All PRs/reviews must verify compliance with these principles and standards.
 
-**Version**: [CONSTITUTION_VERSION] | **Ratified**: [RATIFICATION_DATE] | **Last Amended**: [LAST_AMENDED_DATE]
-<!-- Example: Version: 2.1.1 | Ratified: 2025-06-13 | Last Amended: 2025-07-16 -->
+**Version**: 1.1.0 | **Ratified**: TODO(RATIFICATION_DATE): Original adoption date unknown | **Last Amended**: 2025-12-24

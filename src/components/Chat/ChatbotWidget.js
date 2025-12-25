@@ -26,13 +26,18 @@ const ChatbotWidget = ({ initialOpen = false }) => {
     setIsLoading(true);
 
     try {
-      // 2. Python Agent (FastAPI) ko call karein
-      const response = await fetch('http://localhost:8000/chat', {
+      // 2. Python Agent (FastAPI) ko call karein - using the correct endpoint
+      const response = await fetch('http://localhost:8000/api/v1/query', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ text: currentInput }),
+        body: JSON.stringify({
+          query_text: currentInput, // Changed from 'message' to 'query_text' to match backend API
+          book_id: 'physical_ai_textbook', // Using a default book ID - you can change this as needed
+          session_id: null // Optional session ID - can be implemented later if needed
+          // selected_text is optional and can be added if needed
+        }),
       });
 
       if (!response.ok) {
@@ -44,7 +49,7 @@ const ChatbotWidget = ({ initialOpen = false }) => {
       // 3. Agent ka real response UI mein add karein
       const botMessage = {
         id: Date.now() + 1,
-        text: data.reply, 
+        text: data.response_text, // Backend returns 'response_text' field according to GeneratedResponse model
         sender: 'bot',
         timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
         sources: ['Physical AI Textbook']
