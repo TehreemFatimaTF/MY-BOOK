@@ -27,7 +27,7 @@ const ChatbotWidget = ({ initialOpen = false }) => {
 
     try {
       // 2. Python Agent (FastAPI) ko call karein - using the correct endpoint
-      const response = await fetch('https://tehreemfatimatf-my-backend.hf.space/healthy', {
+      const response = await fetch('https://tehreemfatimatf-my-backend.hf.space/api/v1/query', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
