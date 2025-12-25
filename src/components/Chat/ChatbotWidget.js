@@ -12,33 +12,31 @@ const ChatbotWidget = ({ initialOpen = false }) => {
   const handleSendMessage = async () => {
     if (!inputValue.trim() || isLoading) return;
 
-    // 1. User ka message UI par dikhayein
     const userMessage = {
       id: Date.now(),
       text: inputValue,
       sender: 'user',
       timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
     };
-
     setMessages(prev => [...prev, userMessage]);
-    const currentInput = inputValue; // Copy for API call
+    const currentInput = inputValue;
     setInputValue('');
     setIsLoading(true);
 
     try {
-      // 2. Python Agent (FastAPI) ko call karein - using the correct endpoint
       const response = await fetch('https://tehreemfatimatf-my-backend.hf.space/api/v1/query', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': 'Bearer YOUR_BACKEND_API_KEY'  // <- Ye add karo
+          'Authorization': 'Bearer YOUR_BACKEND_API_KEY' // <- HF Secret ka value
         },
         body: JSON.stringify({
-          query: currentInput,
-          book_id: 'physical_ai_textbook'
+          book_id: 'physical_ai_textbook',
+          query_text: currentInput,
+          selected_text: "",
+          session_id: ""
         }),
       });
-
 
       if (!response.ok) {
         throw new Error('Network response was not ok');
@@ -46,18 +44,15 @@ const ChatbotWidget = ({ initialOpen = false }) => {
 
       const data = await response.json();
 
-      // 3. Agent ka real response UI mein add karein
       const botMessage = {
-      id: Date.now() + 1,
-      text: data.response || data.answer || data.response_text || "No response from backend",
-      sender: 'bot',
-      timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
-    };
-
-
+        id: Date.now() + 1,
+        text: data.response || data.answer || data.response_text || "No response from backend",
+        sender: 'bot',
+        timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
+      };
       setMessages(prev => [...prev, botMessage]);
+
     } catch (error) {
-      // Error handling agar backend off ho
       const errorMessage = {
         id: Date.now() + 1,
         text: "Sorry, I'm having trouble connecting to my brain. Is the backend running?",
@@ -82,9 +77,7 @@ const ChatbotWidget = ({ initialOpen = false }) => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
   }, [messages]);
 
-  const toggleChat = () => {
-    setIsOpen(!isOpen);
-  };
+  const toggleChat = () => setIsOpen(!isOpen);
 
   return (
     <div className={styles.chatContainer}>
@@ -101,21 +94,16 @@ const ChatbotWidget = ({ initialOpen = false }) => {
               <div className={styles.welcomeMessage}>
                 <p>Hello! I'm your Physical AI assistant. I will answer using the textbook data.</p>
               </div>
-            ) : (
-              messages.map((message) => (
-                <div key={message.id} className={clsx(styles.message, styles[message.sender])}>
-                  <div className={styles.messageContent}>
-                    <div className={styles.messageText}>{message.text}</div>
-                    <div className={styles.messageMeta}>
-                      <span className={styles.timestamp}>{message.timestamp}</span>
-                      {message.sender === 'bot' && message.sources && (
-                        <span className={styles.sources}>Sources: {message.sources.join(', ')}</span>
-                      )}
-                    </div>
+            ) : messages.map((message) => (
+              <div key={message.id} className={clsx(styles.message, styles[message.sender])}>
+                <div className={styles.messageContent}>
+                  <div className={styles.messageText}>{message.text}</div>
+                  <div className={styles.messageMeta}>
+                    <span className={styles.timestamp}>{message.timestamp}</span>
                   </div>
                 </div>
-              ))
-            )}
+              </div>
+            ))}
             {isLoading && (
               <div className={clsx(styles.message, styles.bot)}>
                 <div className={styles.typingIndicator}>
