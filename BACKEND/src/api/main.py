@@ -23,7 +23,7 @@ app.add_middleware(
     # Allow credentials to be sent with cross-origin requests
     allow_credentials=True,
     # Allow all origins during development, restrict in production
-    allow_origins=["*"] if settings.debug else settings.allowed_origins,
+    allow_origins=["https://my-book-phi-nine.vercel.app/"] if settings.debug else settings.allowed_origins,
     # Allow all methods and headers
     allow_methods=["*"],
     allow_headers=["*"],
