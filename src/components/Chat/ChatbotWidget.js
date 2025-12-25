@@ -31,12 +31,14 @@ const ChatbotWidget = ({ initialOpen = false }) => {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
+          'Authorization': 'Bearer YOUR_BACKEND_API_KEY'  // <- Ye add karo
         },
         body: JSON.stringify({
           query: currentInput,
           book_id: 'physical_ai_textbook'
         }),
       });
+
 
       if (!response.ok) {
         throw new Error('Network response was not ok');
