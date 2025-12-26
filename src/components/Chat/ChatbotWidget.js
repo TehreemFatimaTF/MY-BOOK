@@ -18,6 +18,7 @@ const ChatbotWidget = ({ initialOpen = false }) => {
       sender: 'user',
       timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
     };
+
     setMessages(prev => [...prev, userMessage]);
     const currentInput = inputValue;
     setInputValue('');
@@ -27,8 +28,8 @@ const ChatbotWidget = ({ initialOpen = false }) => {
       const response = await fetch('https://tehreemfatimatf-my-backend.hf.space/api/v1/query', {
         method: 'POST',
         headers: {
-          'Content-Type': 'application/json',
-          'Authorization': 'Bearer YOUR_BACKEND_API_KEY' // <- HF Secret ka value
+          'Content-Type': 'application/json'
+          // Authorization header ko completely hata diya gaya hai
         },
         body: JSON.stringify({
           book_id: 'physical_ai_textbook',
@@ -50,8 +51,8 @@ const ChatbotWidget = ({ initialOpen = false }) => {
         sender: 'bot',
         timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
       };
-      setMessages(prev => [...prev, botMessage]);
 
+      setMessages(prev => [...prev, botMessage]);
     } catch (error) {
       const errorMessage = {
         id: Date.now() + 1,
@@ -88,7 +89,6 @@ const ChatbotWidget = ({ initialOpen = false }) => {
             <div className={styles.chatSubtitle}>Connected to Agent</div>
             <button className={styles.closeButton} onClick={toggleChat}>×</button>
           </div>
-
           <div className={styles.chatMessages}>
             {messages.length === 0 ? (
               <div className={styles.welcomeMessage}>
@@ -113,7 +113,6 @@ const ChatbotWidget = ({ initialOpen = false }) => {
             )}
             <div ref={messagesEndRef} />
           </div>
-
           <div className={styles.chatInputArea}>
             <textarea
               value={inputValue}
@@ -124,8 +123,8 @@ const ChatbotWidget = ({ initialOpen = false }) => {
               rows="1"
               disabled={isLoading}
             />
-            <button 
-              onClick={handleSendMessage} 
+            <button
+              onClick={handleSendMessage}
               disabled={!inputValue.trim() || isLoading}
               className={clsx(styles.sendButton, (!inputValue.trim() || isLoading) && styles.sendButtonDisabled)}
             >
