@@ -1,7 +1,3 @@
-/**
- * CSS module for the ChatbotWidget component
- * Provides styling for the embedded chat widget in the Physical AI textbook
- */
 .chatContainer {
   position: fixed;
   bottom: 20px;
@@ -12,7 +8,7 @@
 /* closed widget button */
 .chatToggleButton {
   background: #000;
-  color: #FFD700; /* yellow */
+  color: #FFD700;
   padding: 12px 18px;
   border-radius: 50px;
   border: 2px solid #FFD700;
@@ -37,8 +33,10 @@
 
 /* opened widget box */
 .chatWidget {
-  width: 380px;
-  height: 520px;
+  width: 90vw;          /* use viewport width */
+  max-width: 380px;     /* desktop max width */
+  height: 70vh;         /* responsive height */
+  max-height: 520px;    /* desktop max height */
   background: #000;
   border: 2px solid #FFD700;
   border-radius: 16px;
@@ -46,6 +44,7 @@
   flex-direction: column;
   overflow: hidden;
   color: white;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.3);
 }
 
 /* Header */
@@ -71,6 +70,22 @@
   flex: 1;
   padding: 10px;
   overflow-y: auto;
+  scrollbar-width: thin;
+  scrollbar-color: #FFD700 #000;
+}
+
+/* scrollbar for Chrome/Edge/Safari */
+.chatMessages::-webkit-scrollbar {
+  width: 6px;
+}
+
+.chatMessages::-webkit-scrollbar-thumb {
+  background-color: #FFD700;
+  border-radius: 3px;
+}
+
+.chatMessages::-webkit-scrollbar-track {
+  background-color: #000;
 }
 
 /* user + bot messages */
@@ -80,6 +95,7 @@
   padding: 10px;
   border-radius: 10px;
   margin: 6px 0;
+  word-wrap: break-word;
 }
 
 .message.bot .messageContent {
@@ -88,6 +104,7 @@
   padding: 10px;
   border-radius: 10px;
   margin: 6px 0;
+  word-wrap: break-word;
 }
 
 /* input section */
@@ -96,15 +113,18 @@
   padding: 10px;
   border-top: 2px solid #FFD700;
   background: #111;
+  flex-wrap: wrap;
 }
 
 .chatInput {
-  flex: 1;
+  flex: 1 1 60%;       /* responsive width */
+  min-width: 120px;
   border-radius: 8px;
   border: 1px solid #FFD700;
   padding: 8px;
   background: #000;
   color: #FFD700;
+  margin-bottom: 6px;   /* spacing on small screens */
 }
 
 .sendButton {
@@ -116,6 +136,8 @@
   cursor: pointer;
   border: none;
   font-weight: bold;
+  flex: 1 1 auto;
+  min-width: 80px;
 }
 
 .sendButtonDisabled {
@@ -130,4 +152,24 @@
   background: #111;
   color: #FFD700;
   border-top: 1px solid #FFD700;
+}
+
+/* Small screen adjustments */
+@media (max-width: 480px) {
+  .chatWidget {
+    width: 95vw;
+    height: 65vh;
+    bottom: 10px;
+    right: 10px;
+    border-radius: 12px;
+  }
+
+  .chatInputArea {
+    flex-direction: column;
+    gap: 6px;
+  }
+
+  .sendButton {
+    margin-left: 0;
+  }
 }
