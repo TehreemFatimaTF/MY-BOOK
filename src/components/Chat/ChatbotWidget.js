@@ -25,17 +25,13 @@ const ChatbotWidget = ({ initialOpen = false }) => {
     setIsLoading(true);
 
     try {
-      const response = await fetch('https://tehreemfatimatf-my-backend.hf.space/api/v1/query', {
+      const response = await fetch('https://tehreemfatimatf-rag-deploy.hf.space/ask', {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-          // Authorization header ko completely hata diya gaya hai
-        },
+        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
+          query: currentInput,
           book_id: 'physical_ai_textbook',
-          query_text: currentInput,
-          selected_text: "",
-          session_id: ""
+          session_id: 'test-session',
         }),
       });
 
