@@ -34,6 +34,9 @@ System components must be modular and loosely coupled; each module should have c
 ### VI. Environment-Based Configuration
 All API keys and sensitive configurations must be environment-based; no hardcoded credentials allowed; secure handling of all sensitive data required across all components.
 
+### VII. Security-First Authentication
+Authentication must be implemented with security as the top priority; use industry-standard libraries like Better Auth; implement proper session management and secure user data handling.
+
 ## Additional Constraints
 
 Technology Stack Requirements:
@@ -41,7 +44,8 @@ Technology Stack Requirements:
 - Backend: FastAPI for API services
 - Database: Neon Postgres for data storage
 - Vector Storage: Qdrant for RAG implementation
-- Authentication: Better-Auth for user management
+- Authentication: Better-Auth for user management (Task 5: Better-auth Signup/Signin + personalization)
+- User Profiling: Custom fields in Better Auth for software/hardware background collection
 - Deployment: GitHub Pages for static content, MCP for automated deployment
 
 Performance Standards:
@@ -55,6 +59,18 @@ Security Requirements:
 - Authentication required for personalized features
 - Rate limiting implemented on all public endpoints
 - Input validation on all user-facing interfaces
+- Secure password handling and storage (via Better Auth)
+- Session management with proper expiration
+- Protection against common auth-related attacks (CSRF, XSS, etc.)
+- Secure handling of user profiling data
+
+User Profiling Requirements:
+- Collect software background during signup (programming languages, frameworks experience)
+- Collect hardware background during signup (GPU, CPU, devices)
+- Store user preferences for content personalization
+- Use collected data to enhance user experience
+- Ensure GDPR compliance for collected user data
+- Clear privacy policy for user profiling information
 
 ## Development Workflow
 

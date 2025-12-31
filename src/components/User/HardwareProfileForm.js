@@ -5,7 +5,8 @@
  * during registration or profile updates for personalized content delivery.
  */
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { useAuth } from '../../contexts/AuthContext';
 import clsx from 'clsx';
 import styles from './HardwareProfileForm.module.css';
 
@@ -14,8 +15,9 @@ const HardwareProfileForm = ({
   onSubmit,
   onCancel,
   submitButtonText = "Save Profile",
-  isSubmitting = false
+  isSubmitting: externalIsSubmitting = false
 }) => {
+  const { user, updateProfile } = useAuth();
   const [formData, setFormData] = useState({
     hardware_type: initialData.hardware_type || '',
     model: initialData.model || '',
@@ -28,6 +30,7 @@ const HardwareProfileForm = ({
   });
 
   const [errors, setErrors] = useState({});
+  const [isSubmitting, setIsSubmitting] = useState(externalIsSubmitting);
 
   const hardwareTypes = [
     { value: 'jetson', label: 'NVIDIA Jetson' },
@@ -128,14 +131,36 @@ const HardwareProfileForm = ({
     return Object.keys(newErrors).length === 0;
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
     if (validateForm()) {
-      onSubmit({
-        ...formData,
-        jetson_model: formData.hardware_type === 'jetson' ? formData.jetson_model : undefined
-      });
+      setIsSubmitting(true);
+
+      // If user is authenticated, update profile via API
+      if (user && updateProfile) {
+        const result = await updateProfile({
+          ...formData,
+          jetson_model: formData.hardware_type === 'jetson' ? formData.jetson_model : undefined
+        });
+
+        if (result.success) {
+          onSubmit && onSubmit({
+            ...formData,
+            jetson_model: formData.hardware_type === 'jetson' ? formData.jetson_model : undefined
+          });
+        } else {
+          setErrors({ submit: result.error || 'Failed to update profile' });
+        }
+      } else {
+        // If not authenticated, just call onSubmit callback
+        onSubmit && onSubmit({
+          ...formData,
+          jetson_model: formData.hardware_type === 'jetson' ? formData.jetson_model : undefined
+        });
+      }
+
+      setIsSubmitting(false);
     }
   };
 
@@ -251,6 +276,9 @@ const HardwareProfileForm = ({
         </div>
 
         <div className={styles.buttonGroup}>
+          {errors.submit && (
+            <div className={styles.errorText}>{errors.submit}</div>
+          )}
           <button
             type="submit"
             disabled={isSubmitting}
@@ -263,6 +291,7 @@ const HardwareProfileForm = ({
               type="button"
               onClick={onCancel}
               className={styles.cancelButton}
+              disabled={isSubmitting}
             >
               Cancel
             </button>

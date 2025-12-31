@@ -7,13 +7,24 @@
 
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
+import { useAuth } from '../../contexts/AuthContext';
 import './TopNavigation.module.css';
 
-const TopNavigation = ({ user, onLogin, onLogout, onTranslate }) => {
+const TopNavigation = ({ onTranslate }) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const { user, isAuthenticated, loading, logout } = useAuth();
 
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
+  };
+
+  const handleLogout = () => {
+    logout();
+  };
+
+  const handleLogin = () => {
+    // Trigger login modal via custom event
+    window.dispatchEvent(new CustomEvent('showLoginModal'));
   };
 
   return (
@@ -21,23 +32,23 @@ const TopNavigation = ({ user, onLogin, onLogout, onTranslate }) => {
       <div className="nav-container">
         <div className="nav-brand">
           <Link to="/" className="nav-logo">
-            <span className="logo-icon">🤖</span>
+            <span className="logo-icon">📚</span>
             <span className="logo-text">Physical AI</span>
           </Link>
         </div>
 
         <div className={`nav-menu ${isMenuOpen ? 'active' : ''}`}>
           <Link to="/" className="nav-link">
-            Home
+            🏠 Home
           </Link>
           <Link to="/modules" className="nav-link">
-            Modules
+            📚 Modules
           </Link>
           <Link to="/capstone" className="nav-link">
-            Capstone
+            🚀 Capstone
           </Link>
           <Link to="/glossary" className="nav-link">
-            Glossary
+            📖 Glossary
           </Link>
         </div>
 
@@ -50,26 +61,38 @@ const TopNavigation = ({ user, onLogin, onLogout, onTranslate }) => {
             🇵🇰 UR
           </button>
 
-          {user ? (
-            <div className="user-menu">
-              <button className="user-btn">
-                <span className="user-avatar">👤</span>
-                <span className="user-name">{user.name}</span>
-              </button>
-              <button
-                className="logout-btn"
-                onClick={onLogout}
-              >
-                Logout
-              </button>
-            </div>
-          ) : (
-            <button
-              className="login-btn"
-              onClick={onLogin}
-            >
-              Login
-            </button>
+          {!loading && (
+            <>
+              {isAuthenticated ? (
+                <div className="user-menu">
+                  <button className="user-btn">
+                    <span className="user-avatar">👤</span>
+                    <span className="user-name">{user?.name || user?.email?.split('@')[0]}</span>
+                  </button>
+                  <button
+                    className="logout-btn"
+                    onClick={handleLogout}
+                  >
+                    🚪 Logout
+                  </button>
+                </div>
+              ) : (
+                <div className="auth-buttons">
+                  <button
+                    className="login-btn"
+                    onClick={handleLogin}
+                  >
+                    🔐 Login
+                  </button>
+                  <button
+                    className="signup-btn"
+                    onClick={() => window.dispatchEvent(new CustomEvent('showSignupModal'))}
+                  >
+                    ✍️ Sign Up
+                  </button>
+                </div>
+              )}
+            </>
           )}
 
           <button

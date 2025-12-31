@@ -5,7 +5,8 @@
  * Allows users to see content tailored to their hardware setup and experience level.
  */
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { useAuth } from '../../contexts/AuthContext';
 import clsx from 'clsx';
 import styles from './PersonalizationOptions.module.css';
 
@@ -14,8 +15,19 @@ const PersonalizationOptions = ({
   onProfileChange,
   contentMetadata
 }) => {
+  const { user } = useAuth();
   const [showOptions, setShowOptions] = useState(false);
-  const [selectedProfile, setSelectedProfile] = useState(userHardwareProfile || {});
+  // Use authenticated user's profile if available, otherwise use prop or empty object
+  const [selectedProfile, setSelectedProfile] = useState(user || userHardwareProfile || {});
+
+  useEffect(() => {
+    // Update selectedProfile when the authenticated user changes
+    if (user) {
+      setSelectedProfile(user);
+    } else {
+      setSelectedProfile(userHardwareProfile || {});
+    }
+  }, [user, userHardwareProfile]);
 
   const toggleOptions = () => {
     setShowOptions(!showOptions);
@@ -28,25 +40,33 @@ const PersonalizationOptions = ({
 
   // Check if content is compatible with user's hardware
   const isCompatible = () => {
-    if (!contentMetadata || !selectedProfile) return true;
+    if (!contentMetadata) return true;
 
     const requiredHardware = contentMetadata.target_hardware || [];
     if (requiredHardware.length === 0) return true;
 
+    // Use the authenticated user's profile if available, otherwise the selected profile
+    const profileToCheck = user || selectedProfile;
+    if (!profileToCheck) return true;
+
     // Simple compatibility check - in a real implementation this would be more sophisticated
     return requiredHardware.some(req =>
-      selectedProfile.hardware_type === req ||
-      selectedProfile.model === req ||
-      selectedProfile.components?.includes(req)
+      profileToCheck.hardware_type === req ||
+      profileToCheck.model === req ||
+      profileToCheck.components?.includes(req)
     );
   };
 
   // Get compatibility message
   const getCompatibilityMessage = () => {
-    if (!contentMetadata || !selectedProfile) return null;
+    if (!contentMetadata) return null;
 
     const requiredHardware = contentMetadata.target_hardware || [];
     if (requiredHardware.length === 0) return null;
+
+    // Use the authenticated user's profile if available, otherwise the selected profile
+    const profileToCheck = user || selectedProfile;
+    if (!profileToCheck) return null;
 
     if (isCompatible()) {
       return {
@@ -78,67 +98,15 @@ const PersonalizationOptions = ({
 
       {showOptions && (
         <div className={styles.optionsPanel}>
-          <div className={styles.profileSelector}>
-            <label className={styles.label}>Your Hardware Profile:</label>
-            <select
-              className={styles.select}
-              value={selectedProfile.id || ''}
-              onChange={(e) => {
-                const profile = JSON.parse(e.target.value);
-                handleProfileChange(profile);
-              }}
-            >
-              <option value="">Select your setup</option>
-              <option value={JSON.stringify({
-                id: 'jetson_orin_nano',
-                name: 'Jetson Orin Nano',
-                hardware_type: 'jetson',
-                model: 'orin_nano_super',
-                components: ['realsense_d435i', 'respeaker'],
-                software_stack: ['ros2', 'nvidia_isaac']
-              })}>
-                Jetson Orin Nano + Sensors
-              </option>
-              <option value={JSON.stringify({
-                id: 'cloud_workstation',
-                name: 'Cloud Workstation',
-                hardware_type: 'cloud',
-                model: 'aws_g5_2xlarge',
-                components: ['isaac_sim'],
-                software_stack: ['nvidia_isaac', 'omniverse']
-              })}>
-                Cloud Workstation (AWS G5)
-              </option>
-              <option value={JSON.stringify({
-                id: 'basic_ros',
-                name: 'Basic ROS Setup',
-                hardware_type: 'ros_system',
-                model: 'desktop',
-                components: ['camera', 'lidar'],
-                software_stack: ['ros2']
-              })}>
-                Basic ROS Setup
-              </option>
-              <option value={JSON.stringify({
-                id: 'custom',
-                name: 'Custom Setup',
-                hardware_type: 'other',
-                components: [],
-                software_stack: []
-              })}>
-                Custom Setup
-              </option>
-            </select>
-          </div>
-
-          {selectedProfile.id && (
+          {user && (
             <div className={styles.currentProfile}>
-              <h4>Current Profile: {selectedProfile.name}</h4>
+              <h4>Your Profile: {user.name || user.email?.split('@')[0]}</h4>
               <div className={styles.profileDetails}>
-                <p><strong>Type:</strong> {selectedProfile.hardware_type}</p>
-                <p><strong>Model:</strong> {selectedProfile.model || 'N/A'}</p>
-                <p><strong>Components:</strong> {selectedProfile.components?.join(', ') || 'N/A'}</p>
-                <p><strong>Software:</strong> {selectedProfile.software_stack?.join(', ') || 'N/A'}</p>
+                <p><strong>Type:</strong> {user.hardware_type || 'N/A'}</p>
+                <p><strong>Model:</strong> {user.jetson_model || user.model || 'N/A'}</p>
+                <p><strong>Components:</strong> {user.components?.join(', ') || 'N/A'}</p>
+                <p><strong>Software:</strong> {user.software_stack?.join(', ') || 'N/A'}</p>
+                <p><strong>Experience:</strong> {user.experience_level || 'N/A'}</p>
               </div>
             </div>
           )}
@@ -155,13 +123,13 @@ const PersonalizationOptions = ({
           <div className={styles.suggestedContent}>
             <h4>Suggested Content Based on Your Setup:</h4>
             <ul>
-              {selectedProfile.hardware_type === 'jetson' && (
+              {(user?.hardware_type === 'jetson' || selectedProfile?.hardware_type === 'jetson') && (
                 <li>Hardware-specific examples optimized for Jetson platforms</li>
               )}
-              {selectedProfile.software_stack?.includes('ros2') && (
+              {(user?.software_stack?.includes('ros2') || selectedProfile?.software_stack?.includes('ros2')) && (
                 <li>ROS 2 specific code examples and tutorials</li>
               )}
-              {selectedProfile.software_stack?.includes('nvidia_isaac') && (
+              {(user?.software_stack?.includes('nvidia_isaac') || selectedProfile?.software_stack?.includes('nvidia_isaac')) && (
                 <li>NVIDIA Isaac specific implementation details</li>
               )}
               <li>Examples matching your experience level</li>

@@ -4,13 +4,16 @@
 // There are various equivalent ways to declare your Docusaurus config.
 // See: https://docusaurus.io/docs/api/docusaurus-config
 
+// Load environment variables from .env file
+require('dotenv').config();
+
 import {themes as prismThemes} from 'prism-react-renderer';
 
 // This runs in Node.js - Don't use client-side code here (browser APIs, JSX...)
 
 /** @type {import('@docusaurus/types').Config} */
 const config = {
-    title: 'Physical AI & Humanoid Robotics Textbook',
+  title: 'Physical AI & Humanoid Robotics Textbook',
   tagline: 'AI-Native Textbook Platform for Physical AI and Humanoid Robotics Education',
   favicon: 'img/OIP.webp',
   future: {
@@ -23,7 +26,7 @@ const config = {
   onBrokenLinks: 'throw',
   i18n: {
     defaultLocale: 'en',
-    locales: ['en'],
+    locales: ['en', 'ur'],
   },
 
   presets: [
@@ -68,27 +71,28 @@ const config = {
       colorMode: {
         respectPrefersColorScheme: true,
       },
-      navbar: {
-        title: 'Physical AI & Humanoid Robotics Textbook',
-        logo: {
-          alt: 'Physical AI & Humanoid Robotics Logo',
-          src: 'img/OIP.webp',
-        },
-        items: [
-          {
-            type: 'docSidebar',
-            sidebarId: 'tutorialSidebar',
-            position: 'left',
-            label: 'Book',
-          },
-          // {to: '/blog', label: 'Blog', position: 'left'},
-          {
-            href: 'https://github.com/your-username/MY-HACKATHON',
-            label: 'GitHub',
-            position: 'right',
-          },
-        ],
-      },
+     navbar: {
+  title: 'Physical AI & Humanoid Robotics Textbook',
+  logo: {
+    alt: 'Physical AI & Humanoid Robotics Logo',
+    src: 'img/OIP.webp',
+  },
+  items: [
+    {
+      type: 'docSidebar',
+      sidebarId: 'tutorialSidebar',
+      position: 'left',
+      label: 'Book',
+    },
+    
+    {
+      href: 'https://github.com/your-username/MY-HACKATHON',
+      label: 'GitHub',
+      position: 'right',
+    },
+  ],
+},
+
       footer: {
         style: 'dark',
         links: [
@@ -143,7 +147,18 @@ const config = {
         theme: prismThemes.github,
         darkTheme: prismThemes.dracula,
       },
-    }),
-};
-
+      // Add environment variables to be available in the browser
+      // These will be replaced at build time
+      firebaseConfig: {
+        apiKey: process.env.REACT_APP_FIREBASE_API_KEY || "AIzaSyDimxaQNxOqtT-BvG9x_7E13jIWXo1Pbk8",
+        authDomain: process.env.REACT_APP_FIREBASE_AUTH_DOMAIN || "my-docusaurus-site.firebaseapp.com",
+        projectId: process.env.REACT_APP_FIREBASE_PROJECT_ID || "my-docusaurus-site",
+        storageBucket: process.env.REACT_APP_FIREBASE_STORAGE_BUCKET || "my-docusaurus-site.firebasestorage.app",
+        messagingSenderId: process.env.REACT_APP_FIREBASE_MESSAGING_SENDER_ID || "812534412214",
+        appId: process.env.REACT_APP_FIREBASE_APP_ID || "1:812534412214:web:9eaacd21ead0afae8d8717",
+        measurementId: process.env.REACT_APP_FIREBASE_MEASUREMENT_ID || "G-KGJ96XLC0G",
+      }
+    })
+  }
 export default config;
+

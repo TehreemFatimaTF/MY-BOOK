@@ -1,0 +1,251 @@
+/* Navbar.css - Pyaara Yellow-Black Theme with 3D Effects */
+
+/* 🌟 Main Navbar Styling */
+:root {
+  --gold-yellow: #FFD700;
+  --vibrant-yellow: #FFED4E;
+  --orange-yellow: #FFA500;
+  --deep-black: #0A0A0A;
+  --dark-gray: #1A1A1A;
+  --gold-glow: rgba(255, 215, 0, 0.6);
+}
+
+/* ✨ Floating Animation */
+@keyframes float {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-5px); }
+}
+
+@keyframes glow {
+  0%, 100% { box-shadow: 0 0 20px var(--gold-glow); }
+  50% { box-shadow: 0 0 40px var(--gold-glow); }
+}
+
+@keyframes rotate3d {
+  0% { transform: rotateY(0deg); }
+  100% { transform: rotateY(360deg); }
+}
+
+/* 🎨 Custom Auth Button Container */
+.golden-auth-container {
+  position: fixed;
+  top: 15px;
+  right: 30px;
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  background: rgba(10, 10, 10, 0.9);
+  backdrop-filter: blur(10px);
+  padding: 10px 20px;
+  border-radius: 50px;
+  border: 2px solid transparent;
+  animation: glow 3s infinite alternate;
+  margin-top: 60px;/* Yeh kaam nahi karega */
+  margin-right: -12px;
+
+}
+
+/* 🌟 User Info Styling */
+.user-greeting {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 16px;
+  background: linear-gradient(135deg, 
+    rgba(255, 215, 0, 0.1), 
+    rgba(255, 165, 0, 0.05)
+  );
+  border-radius: 25px;
+  border: 1px solid var(--gold-yellow);
+}
+
+.user-avatar {
+  width: 35px;
+  height: 35px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--gold-yellow), var(--orange-yellow));
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+  color: #000;
+  font-size: 16px;
+  animation: float 3s ease-in-out infinite;
+}
+
+.username {
+  color: var(--gold-yellow);
+  font-weight: 600;
+  font-size: 0.95rem;
+  text-shadow: 0 0 10px var(--gold-glow);
+}
+
+/* ✨ Button Styles */
+.golden-button {
+  position: relative;
+  padding: 12px 25px;
+  border: none;
+  border-radius: 50px;
+  font-weight: 700;
+  font-size: 0.95rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  overflow: hidden;
+  min-width: 110px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.golden-button::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, 
+    transparent, 
+    rgba(255, 255, 255, 0.3), 
+    transparent
+  );
+  transition: 0.6s;
+}
+
+.golden-button:hover::before {
+  left: 100%;
+}
+
+.golden-button:hover {
+  transform: scale(1.05) translateY(-2px);
+}
+
+/* 🟢 Login Button */
+.login-btn-golden {
+  background: linear-gradient(135deg, 
+    #28a745 0%, 
+    #20c997 50%, 
+    #28a745 100%
+  );
+  color: white;
+  box-shadow: 0 5px 20px rgba(40, 167, 69, 0.4);
+}
+
+.login-btn-golden:hover {
+  box-shadow: 0 8px 30px rgba(40, 167, 69, 0.6);
+  animation: float 2s ease-in-out infinite;
+}
+
+.login-btn-golden::after {
+  content: '🔓';
+  font-size: 16px;
+}
+
+/* 🔴 Logout Button */
+.logout-btn-golden {
+  background: linear-gradient(135deg, 
+    #fff241 0%, 
+    #ffea2b 50%, 
+    #fffc41 100%
+  );
+  color: white;
+  box-shadow: 0 5px 20px rgba(255, 252, 65, 0.4);
+}
+
+.logout-btn-golden:hover {
+  box-shadow: 0 8px 30px rgba(255, 252, 65, 0.6);
+  animation: float 2s ease-in-out infinite;
+}
+
+.logout-btn-golden::after {
+  content: '🚪';
+  font-size: 16px;
+  animation: swingDoor 2s infinite;
+}
+
+@keyframes swingDoor {
+  0%, 100% { transform: rotate(0deg); }
+  25% { transform: rotate(15deg); }
+  75% { transform: rotate(-15deg); }
+}
+
+/* 🌟 Loading Animation */
+.loading-spinner-golden {
+  width: 25px;
+  height: 25px;
+  border: 3px solid rgba(255, 215, 0, 0.2);
+  border-top: 3px solid var(--gold-yellow);
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+/* ✨ Particles Effect */
+.particles-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 999;
+  overflow: hidden;
+}
+
+.gold-particle {
+  position: absolute;
+  background: var(--gold-yellow);
+  border-radius: 50%;
+  animation: particleFloat 5s linear infinite;
+}
+
+@keyframes particleFloat {
+  0% {
+    transform: translateY(100vh) translateX(0) rotate(0deg);
+    opacity: 0;
+  }
+  10% {
+    opacity: 0.8;
+  }
+  90% {
+    opacity: 0.8;
+  }
+  100% {
+    transform: translateY(-100px) translateX(100px) rotate(360deg);
+    opacity: 0;
+  }
+}
+
+/* 📱 Responsive Design */
+@media (max-width: 768px) {
+  .golden-auth-container {
+    top: 10px;
+    right: 15px;
+    padding: 8px 15px;
+    gap: 10px;
+  }
+  
+  .golden-button {
+    padding: 10px 18px;
+    font-size: 0.85rem;
+    min-width: 90px;
+  }
+  
+  .user-greeting {
+    padding: 6px 12px;
+  }
+  
+  .user-avatar {
+    width: 30px;
+    height: 30px;
+    font-size: 14px;
+  }
+}

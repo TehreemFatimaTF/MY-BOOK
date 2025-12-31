@@ -15,8 +15,8 @@
   align-items: center;
   gap: 0.5rem;
   padding: 0.5rem 1rem;
-  background-color: #42b549;
-  color: white;
+  background-color: #FFD700; /* Yellow color as requested */
+  color: #333;
   border: none;
   border-radius: 4px;
   cursor: pointer;
