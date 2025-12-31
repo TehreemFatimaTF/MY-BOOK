@@ -2,8 +2,9 @@
 Configuration management with secure API key handling
 """
 from pydantic_settings import BaseSettings
-from typing import Optional, List
+from typing import  List
 import os
+
 from dotenv import load_dotenv
 
 # Load environment variables from .env file
@@ -11,28 +12,29 @@ load_dotenv()
 
 class Settings(BaseSettings):
     # API Keys and endpoints
-    cohere_api_key: str = ""
-    qdrant_api_key: str = ""
-    qdrant_cluster_endpoint: str = ""
-    neon_db_url: str = ""
-    gemini_api_key: str = ""
-    
+    cohere_api_key: str = "xzwpz0gbkUMQl3Z9V1gfPQlOPDVk7WVLaggg0wbp"
+    qdrant_api_key: str = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhY2Nlc3MiOiJtIn0.mylOODSXs7r7X9I5tmD3TPzkygNC7ETuXFbJ3TqnHMo"
+    qdrant_cluster_endpoint: str = "https://93fcb6e7-a4b3-4a43-8672-29f49b7dca47.europe-west3-0.gcp.cloud.qdrant.io"
+    neon_db_url: str = "postgresql://neondb_owner:npg_XKh79jmJaPTy@ep-dry-shape-adaugw9x-pooler.c-2.us-east-1.aws.neon.tech/neondb?sslmode=require&channel_binding=require"
+    gemini_api_key: str = "AIzaSyC1oOoxocavuWfe7-91amfPI9gTVK7iJfw"
+    openrouter_api_key: str = "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"
 
     # Application settings
     app_name: str = "Book RAG Chatbot"
     app_version: str = "0.1.0"
     debug: bool = False
+    llm_provider: str = "gemini"  # Options: cohere, gemini, openrouter
 
     # API settings
     api_v1_prefix: str = "/api/v1"
     allowed_origins: List[str] = ["http://localhost:3000/"]  # Should be configured based on deployment
 
     # Cohere settings
-    cohere_model: str = "command-r-plus"  # Default model for generation
+    cohere_model: str = "command-r-08-2024"  # Default model for generation
     cohere_embedding_model: str = "embed-english-v3.0"  # Default model for embeddings
 
     # Qdrant settings
-    qdrant_collection_name: str = "book_content_chunks"
+    qdrant_collection_name: str = "MY_BOOK"
 
     # Database settings
     postgres_pool_size: int = 20
