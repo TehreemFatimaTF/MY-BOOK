@@ -10,7 +10,7 @@ if (typeof window !== 'undefined' && window.DOCUSAURUS_CONFIG && window.DOCUSAUR
   firebaseConfig = window.DOCUSAURUS_CONFIG.themeConfig.firebaseConfig;
 
   // Log the loaded config for debugging (only in development)
-  if (typeof process !== 'undefined' && process.env && process.env.NODE_ENV !== 'production') {
+  if (typeof window !== 'undefined' && window.location && window.location.hostname !== 'localhost') {
     console.log('Firebase config loaded from Docusaurus config:', {
       apiKey: firebaseConfig.apiKey ? '***HIDDEN***' : 'MISSING',
       authDomain: firebaseConfig.authDomain || 'MISSING',
@@ -26,27 +26,27 @@ if (typeof window !== 'undefined' && window.DOCUSAURUS_CONFIG && window.DOCUSAUR
       : "",
     authDomain: typeof window !== 'undefined' && window.DOCUSAURUS_CONFIG && window.DOCUSAURUS_CONFIG.themeConfig && window.DOCUSAURUS_CONFIG.themeConfig.firebaseConfig
       ? window.DOCUSAURUS_CONFIG.themeConfig.firebaseConfig.authDomain
-      : "my-docusaurus-site.firebaseapp.com",
+      : "",
     projectId: typeof window !== 'undefined' && window.DOCUSAURUS_CONFIG && window.DOCUSAURUS_CONFIG.themeConfig && window.DOCUSAURUS_CONFIG.themeConfig.firebaseConfig
       ? window.DOCUSAURUS_CONFIG.themeConfig.firebaseConfig.projectId
-      : "my-docusaurus-site",
+      : "",
     storageBucket: typeof window !== 'undefined' && window.DOCUSAURUS_CONFIG && window.DOCUSAURUS_CONFIG.themeConfig && window.DOCUSAURUS_CONFIG.themeConfig.firebaseConfig
       ? window.DOCUSAURUS_CONFIG.themeConfig.firebaseConfig.storageBucket
-      : "my-docusaurus-site.firebasestorage.app",
+      : "",
     messagingSenderId: typeof window !== 'undefined' && window.DOCUSAURUS_CONFIG && window.DOCUSAURUS_CONFIG.themeConfig && window.DOCUSAURUS_CONFIG.themeConfig.firebaseConfig
       ? window.DOCUSAURUS_CONFIG.themeConfig.firebaseConfig.messagingSenderId
-      : "812534412214",
+      : "",
     appId: typeof window !== 'undefined' && window.DOCUSAURUS_CONFIG && window.DOCUSAURUS_CONFIG.themeConfig && window.DOCUSAURUS_CONFIG.themeConfig.firebaseConfig
       ? window.DOCUSAURUS_CONFIG.themeConfig.firebaseConfig.appId
-      : "1:812534412214:web:9eaacd21ead0afae8d8717",
+      : "",
     measurementId: typeof window !== 'undefined' && window.DOCUSAURUS_CONFIG && window.DOCUSAURUS_CONFIG.themeConfig && window.DOCUSAURUS_CONFIG.themeConfig.firebaseConfig
       ? window.DOCUSAURUS_CONFIG.themeConfig.firebaseConfig.measurementId
-      : "G-KGJ96XLC0G"
+      : ""
   };
 
   // Log the fallback config for debugging (only in development)
-  if (typeof process !== 'undefined' && process.env && process.env.NODE_ENV !== 'production') {
-    console.log('Firebase config loaded from hardcoded fallback values');
+  if (typeof window !== 'undefined' && window.location && window.location.hostname !== 'localhost') {
+    console.log('Firebase config loaded from fallback values');
   }
 }
 
@@ -65,7 +65,7 @@ try {
 export const auth = getAuth(app);
 
 // Log the Firebase configuration to help with debugging
-if (typeof process !== 'undefined' && process.env && process.env.NODE_ENV !== 'production') {
+if (typeof window !== 'undefined' && window.location && window.location.hostname !== 'localhost') {
   console.log('Firebase initialized with config:', {
     apiKey: firebaseConfig.apiKey ? '***HIDDEN***' : 'MISSING',
     authDomain: firebaseConfig.authDomain,

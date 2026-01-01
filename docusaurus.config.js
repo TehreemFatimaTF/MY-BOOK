@@ -150,13 +150,13 @@ const config = {
       // Add environment variables to be available in the browser
       // These will be replaced at build time
       firebaseConfig: {
-        apiKey: process.env.REACT_APP_FIREBASE_API_KEY || "AIzaSyDimxaQNxOqtT-BvG9x_7E13jIWXo1Pbk8",
-        authDomain: process.env.REACT_APP_FIREBASE_AUTH_DOMAIN || "my-docusaurus-site.firebaseapp.com",
-        projectId: process.env.REACT_APP_FIREBASE_PROJECT_ID || "my-docusaurus-site",
-        storageBucket: process.env.REACT_APP_FIREBASE_STORAGE_BUCKET || "my-docusaurus-site.firebasestorage.app",
-        messagingSenderId: process.env.REACT_APP_FIREBASE_MESSAGING_SENDER_ID || "812534412214",
-        appId: process.env.REACT_APP_FIREBASE_APP_ID || "1:812534412214:web:9eaacd21ead0afae8d8717",
-        measurementId: process.env.REACT_APP_FIREBASE_MEASUREMENT_ID || "G-KGJ96XLC0G",
+        apiKey: process.env.REACT_APP_FIREBASE_API_KEY || "",
+        authDomain: process.env.REACT_APP_FIREBASE_AUTH_DOMAIN || "",
+        projectId: process.env.REACT_APP_FIREBASE_PROJECT_ID || "",
+        storageBucket: process.env.REACT_APP_FIREBASE_STORAGE_BUCKET || "",
+        messagingSenderId: process.env.REACT_APP_FIREBASE_MESSAGING_SENDER_ID || "",
+        appId: process.env.REACT_APP_FIREBASE_APP_ID || "",
+        measurementId: process.env.REACT_APP_FIREBASE_MEASUREMENT_ID || "",
       }
     })
   }
