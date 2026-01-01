@@ -52,17 +52,32 @@ if (typeof window !== 'undefined' && window.DOCUSAURUS_CONFIG && window.DOCUSAUR
 
 // Initialize Firebase app with better error handling
 let app;
-try {
-  // Check if Firebase app already exists to avoid multiple initialization error
-  app = initializeApp(firebaseConfig);
-} catch (error) {
-  // If app already exists, get the default app
-  app = initializeApp();
-  console.warn('Firebase app already initialized, using existing app');
+if (firebaseConfig.apiKey) {
+  try {
+    // Check if Firebase app already exists to avoid multiple initialization error
+    app = initializeApp(firebaseConfig);
+  } catch (error) {
+    // If app already exists, get the default app
+    app = initializeApp();
+    console.warn('Firebase app already initialized, using existing app');
+  }
+} else {
+  console.warn('Firebase not initialized: API key is missing. Please set up environment variables.');
+  // Create a mock app object to prevent errors when Firebase is not configured
+  app = null;
 }
 
 // Initialize Firebase Authentication and get a reference to the service
-export const auth = getAuth(app);
+let auth;
+if (app) {
+  auth = getAuth(app);
+} else {
+  // Create a mock auth object to prevent errors when Firebase is not configured
+  auth = null;
+  console.warn('Firebase Auth not initialized due to missing configuration.');
+}
+
+export { auth };
 
 // Log the Firebase configuration to help with debugging
 if (typeof window !== 'undefined' && window.location && window.location.hostname !== 'localhost') {
@@ -75,10 +90,16 @@ if (typeof window !== 'undefined' && window.location && window.location.hostname
   console.log('Firebase auth object created:', auth ? 'SUCCESS' : 'FAILED');
 }
 
+// Export Firebase auth methods with safety checks
+const safeCreateUserWithEmailAndPassword = auth ? createUserWithEmailAndPassword : () => Promise.reject(new Error('Firebase not initialized'));
+const safeSignInWithEmailAndPassword = auth ? signInWithEmailAndPassword : () => Promise.reject(new Error('Firebase not initialized'));
+const safeSignOut = auth ? signOut : () => Promise.reject(new Error('Firebase not initialized'));
+const safeOnAuthStateChanged = auth ? onAuthStateChanged : () => { console.warn('Firebase not initialized'); };
+
 // Export Firebase auth methods
 export {
-  createUserWithEmailAndPassword,
-  signInWithEmailAndPassword,
-  signOut,
-  onAuthStateChanged
+  safeCreateUserWithEmailAndPassword as createUserWithEmailAndPassword,
+  safeSignInWithEmailAndPassword as signInWithEmailAndPassword,
+  safeSignOut as signOut,
+  safeOnAuthStateChanged as onAuthStateChanged
 };
