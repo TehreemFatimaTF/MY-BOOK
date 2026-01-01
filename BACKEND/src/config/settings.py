@@ -12,12 +12,12 @@ load_dotenv()
 
 class Settings(BaseSettings):
     # API Keys and endpoints
-    cohere_api_key: str = "xzwpz0gbkUMQl3Z9V1gfPQlOPDVk7WVLaggg0wbp"
-    qdrant_api_key: str = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhY2Nlc3MiOiJtIn0.mylOODSXs7r7X9I5tmD3TPzkygNC7ETuXFbJ3TqnHMo"
+    cohere_api_key: str = ""
+    qdrant_api_key: str = ""
     qdrant_cluster_endpoint: str = "https://93fcb6e7-a4b3-4a43-8672-29f49b7dca47.europe-west3-0.gcp.cloud.qdrant.io"
-    neon_db_url: str = "postgresql://neondb_owner:npg_XKh79jmJaPTy@ep-dry-shape-adaugw9x-pooler.c-2.us-east-1.aws.neon.tech/neondb?sslmode=require&channel_binding=require"
-    gemini_api_key: str = "AIzaSyC1oOoxocavuWfe7-91amfPI9gTVK7iJfw"
-    openrouter_api_key: str = "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"
+    neon_db_url: str = ""
+    gemini_api_key: str = ""
+    openrouter_api_key: str = ""
 
     # Application settings
     app_name: str = "Book RAG Chatbot"
@@ -61,16 +61,22 @@ def validate_config():
     errors = []
 
     if not settings.cohere_api_key:
-        errors.append("COHERE_API_KEY is not set")
+        errors.append("COHERE_API_KEY is not set in environment variables")
 
     if not settings.qdrant_api_key:
-        errors.append("QDRANT_API_KEY is not set")
+        errors.append("QDRANT_API_KEY is not set in environment variables")
 
     if not settings.qdrant_cluster_endpoint:
         errors.append("QDRANT_CLUSTER_ENDPOINT is not set")
 
     if not settings.neon_db_url:
-        errors.append("NEON_DB_URL is not set")
+        errors.append("NEON_DB_URL is not set in environment variables")
+
+    if not settings.gemini_api_key:
+        errors.append("GEMINI_API_KEY is not set in environment variables")
+
+    if not settings.openrouter_api_key:
+        errors.append("OPENROUTER_API_KEY is not set in environment variables")
 
     if errors:
         raise ValueError(f"Configuration validation failed: {'; '.join(errors)}")
