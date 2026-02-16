@@ -16,7 +16,7 @@ const config = {
   future: {
     v4: true, // Improve compatibility with the upcoming Docusaurus v4
   },
-  url: 'https://TehreemFatimaTF.github.io', // Replace with your GitHub Pages URL
+  url: "https://my-book-phi-nine.vercel.app",
   baseUrl: '/', // GitHub Pages subdirectory for this project
   organizationName: 'TehreemFatimaTF', // Usually your GitHub org/user name.
   projectName: 'physical-ai-robotics-textbook',
